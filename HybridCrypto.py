@@ -13,78 +13,104 @@ ALLOWED_EXTENSIONS = set(['txt'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 def resultE():
     return render_template('Result.html')
+
 
 def resultD():
     return render_template('resultD.html')
 
+
 @app.route('/encrypt/')
 def EncryptInput():
-  Segment()
-  gatherInfo()
-  HybridCrypt()
-  return resultE()
+    Segment()
+    gatherInfo()
+    HybridCrypt()
+    return resultE()
+
 
 @app.route('/decrypt/')
 def DecryptMessage():
-  st=time.time()
-  HybridDeCrypt()
-  et=time.time()
-  print(et-st)
-  trim()
-  st=time.time()
-  Merge()
-  et=time.time()
-  print(et-st)
-  return resultD()
+    st = time.time()
+    HybridDeCrypt()
+    et = time.time()
+    print(et-st)
+    trim()
+    st = time.time()
+    Merge()
+    et = time.time()
+    print(et-st)
+    return resultD()
+
 
 def start():
-  content = open('./Original.txt','r')
-  content.seek(0)
-  first_char = content.read(1) 
-  if not first_char:
-    return render_template('Empty.html')
-  else:
-    return render_template('Option.html')
+    content = open('./Original.txt', 'r')
+    content.seek(0)
+    first_char = content.read(1)
+    if not first_char:
+        return render_template('Empty.html')
+    else:
+        return render_template('Option.html')
+
 
 @app.route('/')
 def index():
-  return render_template('index.html')
+    return render_template('index.html')
+
 
 def allowed_file(filename):
-  return '.' in filename and \
-    filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/return-files-key/')
 def return_files_key():
-  try:
-    return send_file('./Lenna-secret.png',attachment_filename='Lenna-secret.png',as_attachment=True)
-  except Exception as e:
-    return str(e)
+    try:
+        return send_file('./Lenna-secret.png', attachment_filename='Lenna-secret.png', as_attachment=True)
+    except Exception as e:
+        return str(e)
+
 
 @app.route('/return-files-data/')
 def return_files_data():
+    try:
+        return send_file('./Output.txt', attachment_filename='Output.txt', as_attachment=True)
+      
+    except Exception as e:
+        return str(e)
+@app.route('/return-encrypted-text/')
+def return_encrypted_data():
+  enc_txt=open("./encrypted_txt.txt",'wb')
+  for i in range(0,2):
+      name=os.path.join(os.getcwd()+"/Segments",str(i)+".txt")
+      f=open(name,"rb")
+      cont=f.read()
+      enc_txt.write(cont)
+      f.close()
+  enc_txt.close()
   try:
-    return send_file('./Output.txt',attachment_filename='Output.txt',as_attachment=True)
+        return send_file('./encrypted_txt.txt', attachment_filename='encrypted_txt.txt', as_attachment=True)
   except Exception as e:
-    return str(e)
+        return str(e)
 
 
 @app.route('/data/', methods=['GET', 'POST'])
 def upload_file():
-  if request.method == 'POST':
-    if 'file' not in request.files:
-      return render_template('Nofile.html')
-    file = request.files['file']
-    if file.filename == '':
-      return render_template('Nofile.html')
-    if file and allowed_file(file.filename):
-      filename = secure_filename(file.filename)
-      file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'Original.txt'))
-      return start()
-       
-    return render_template('Invalid.html')
-    
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return render_template('Nofile.html')
+        file = request.files['file']
+        if file.filename == '':
+            return render_template('Nofile.html')
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], 'Original.txt'))
+            return start()
+
+        return render_template('Invalid.html')
+
+
 if __name__ == '__main__':
-  app.run(debug=True)
+    app.run(debug=True)

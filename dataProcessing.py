@@ -71,7 +71,6 @@ def Merge():
 		name=os.path.join(os.getcwd()+"/Segments",str(i)+".txt")
 		f=open(name,"r")
 		cont=f.read()
-		print(cont)
 		mainFile.write(cont)
 		f.close()
 		os.remove(name)

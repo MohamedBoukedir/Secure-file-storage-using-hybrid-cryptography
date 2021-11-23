@@ -1,1 +1,3 @@
-Hello
+ASCII value of ‘ H ‘ is 72 whose binary equivalent is 01001000.
+Taking first 3-pixels (27, 64, 164), (248, 244, 194), (174, 246, 250) to encode. Now change the pixel to odd for 1 and even for 0. So, the modifies pixels are (26, 63, 164), (248, 243, 194), (174, 246, 250). Since we have to encode more data, therefore, the last value should be even. Similarly, ‘i‘ can be encoded in this image.
+The new image will look like :

@@ -7,17 +7,17 @@ def Segment():
 	for char in con:
 		count+=1
 	k=0
-	limit=int(count/5)
-	for i in range(0,5):
+	limit=int(count/2)
+	for i in range(0,2):
 		name=str(i)+".txt"
-		path=os.path.join(os.getcwd()+"\Segments",name)
+		path=os.path.join(os.getcwd()+"/Segments",name)
 		f=open(path,'w')
 		ctr=0
 		for j in range(k,count):
 			k+=1
 			f.write(con[j])
 			ctr+=1
-			if(ctr==limit and i!=4):
+			if(ctr==limit and i!=1):
 				f.close()
 				break
 		f.close()
@@ -29,7 +29,7 @@ def gatherInfo():
 	path2=os.getcwd()
 	path2=path2+"/Segments/"
 	mainFile=open(path1,'w')
-	lisDir=os.listdir(os.path.join(os.getcwd()+"\Segments"))
+	lisDir=os.listdir(os.path.join(os.getcwd()+"/Segments"))
 	for i in lisDir:
 		f=open(path2+i,'r')
 		content=f.read()
@@ -65,12 +65,10 @@ def trim():
 		f.close()
 		tData=""
 			
-
-
 def Merge():
 	mainFile=open("Output.txt","w")
-	for i in range(0,5):
-		name=os.path.join(os.getcwd()+"\Segments",str(i)+".txt")
+	for i in range(0,2):
+		name=os.path.join(os.getcwd()+"/Segments",str(i)+".txt")
 		f=open(name,"r")
 		cont=f.read()
 		print(cont)

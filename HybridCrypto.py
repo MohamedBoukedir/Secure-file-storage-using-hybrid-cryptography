@@ -59,7 +59,7 @@ def allowed_file(filename):
 @app.route('/return-files-key/')
 def return_files_key():
   try:
-    return send_file('./Original.txt',attachment_filename='Original.txt',as_attachment=True)
+    return send_file('./Lenna-secret.png',attachment_filename='Lenna-secret.png',as_attachment=True)
   except Exception as e:
     return str(e)
 
